@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <link rel="stylesheet" href= "/style.css">
+        <link rel="stylesheet" href= "/readyUp.css">
+        <title>goose chase</title>
+    </head>
+
+    <body>
+        <div id="playersContainer">
+            <div class="header">
+                <h1>players<h1>
+                <h5>press ready up to begin!<h5>
+            </div>
+
+            <div class="playerContainer" id="playerContainer">
+                <% for (let i = 0; i < prevPlayers.length; i++) { %>
+                    <div class= "playerProfile" id="<%= prevPlayers[i].id %>">
+                        <img class = "profile-small" src="/src/<%= prevPlayers[i].bird %>">
+                        <h3><%= prevPlayers[i].name %></h3>
+                        <h3 class = "ready" id="<%= prevPlayers[i].id %>_ready"><%= prevPlayers[i].ready ? "READY" : "NOT READY" %></h3>
+                    </div>
+                <% } %>
+            </div>
+            <div class = "readyUpContainer">
+
+                <button class = "readyUp" onclick="readyClick()" style="color: white">Ready Up</button>
+
+            </div>
+        </div>
+        <div id="gameSection" style="display:none">
+            <div style="text-align: center; background-color: #b03939; padding: 8px; margin-bottom: 3px; color: white; font-family:'Lucida Sans';">
+                <h1 style="font-size: 26px">Find the "CMU Leadership" page!</h1>
+            </div>
+            <iframe srcdoc="<%= code %>" width="100%" height="100%" id="HTMLiframe"></iframe>
+        </div>
+        <div id="endScreen" style="display: none">
+            <div class = "container">
+                <h1 id="endScreenText">YOU LOSE!</h1>
+            </div>
+            <div class = "mainIcon">
+                <img src="/src/flam.gif" width="500" height="500">
+            </div>
+        </div>
+
+        <!-- ignore script under -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"></script>
+        <script>
+            var getCookies = function(){
+                var pairs = document.cookie.split(";");
+                var cookies = {};
+                for (var i=0; i<pairs.length; i++){
+                    var pair = pairs[i].split("=");
+                    cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
+                }
+                return cookies;
+            }
+
+            const cookies = getCookies()
+            const socket = io()
+
+            socket.on('connect', function() {
+                console.log("yay")
+                socket.emit('room', {name: cookies.chocolateChip, bird: cookies.sugar, roomId: '<%= roomId %>'});
+            });
+
+            socket.on('playerJoin', function(data) {
+                const playerContainer = document.getElementById('playerContainer')
+
+                const newPlayerDiv = document.createElement('div')
+                newPlayerDiv.id = data.id
+                newPlayerDiv.className = 'playerProfile'
+
+                const newPlayerImg = document.createElement('img')
+                newPlayerImg.className = 'profile-small'
+                newPlayerImg.src = '/src/' + data.bird
+
+                const newPlayerName = document.createElement('h3')
+                newPlayerName.innerText = data.name
+
+                const newPlayerReady = document.createElement('button')
+                newPlayerReady.className = 'ready'
+                newPlayerReady.innerText = 'NOT READY'
+                newPlayerReady.id = data.id + "_ready"
+
+                newPlayerDiv.appendChild(newPlayerImg)
+                newPlayerDiv.appendChild(newPlayerName)
+                newPlayerDiv.appendChild(newPlayerReady)
+                playerContainer.appendChild(newPlayerDiv)
+                // console.log('PLAYER JOINED:', data);
+            })
+
+            socket.on('readyUp', function(id) {
+                console.log(id)
+                document.getElementById(id.id + '_ready').innerHTML = 'READY'
+            })
+
+            socket.on('startGame', function() {
+                document.getElementById('playersContainer').style.display = 'none'
+                document.getElementById('gameSection').style.display = 'block'
+            })
+
+            socket.on('endGame', function() {
+                document.getElementById('gameSection').style.display = 'none'
+                document.getElementById('endScreen').style.display = 'block'
+            })
+
+            function readyClick() {
+                socket.emit('readyUp');
+            }
+
+            function winGame() {
+                console.log('win')
+                socket.emit('winGame');
+                document.getElementById('endScreenText').innerHTML = 'YOU WIN!'
+            }
+        </script>
+    </body>
+</html>

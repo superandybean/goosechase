@@ -1,0 +1,147 @@
+<html>
+    <head>
+        <link rel="stylesheet" href= "style.css">
+       <link rel="stylesheet" href= "carousel.css">
+       <title>goose chase</title>
+    </head>
+    <body>
+        <form class="form-inline">
+            <label for="name">Enter Name:</label>
+            <input type="text" id="nameInput" name="name" value="<%= name %>"
+            required minlength="4" maxlength="20" size="10" style="width: 400px;" onchange="changeName()">
+        </form>
+
+        <!-- <label for="character">Choose Character:</label>
+        <input type="image" src="/src/duoOwl.png" />
+        <input type="image" src="/src/parrot.png" /> -->
+
+        <!-- Slideshow container -->
+        <div class="slideshow-container" style="width:50%">
+            <h1>choose a bird!</h1>
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/duoOwl.png" style="width:50%" id="duo" onclick="changeBird('duoOwl')"></button>
+                 <div class="text">Duo the Dynamic Owl</div>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/parrot.png" style="width:50%" id="parrot" onclick="changeBird('parrot')"></button>
+                 <div class="text">Polly the Pissed Parrot</div>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/flamglam.png" style="width:50%" id="flam" onclick="changeBird('flam')"></button>
+                 <div class="text">Flam the Flamin Flamingo</div>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/ostrich.png" style="width:50%" id="ollie" onclick="changeBird('ollie')"></button>
+                 <div class="text">Ollie the Owkward Ostrich</div>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/penguin.png" style="width:50%" id="pinky" onclick="changeBird('pinky')"></button>
+                 <div class="text">Pinky the Poppin Penguin</div>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/honk.png" style="width:50%" id="honkie" onclick="changeBird('honkie')"></button>
+                 <div class="text">Honkie the Chonky Goose</div>
+            </div>
+
+            <!-- Next and previous buttons -->
+            <div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            <br>
+
+            <!-- The dots/circles -->
+            <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+            <span class="dot" onclick="currentSlide(7)"></span>
+            </div>
+        </div>
+
+        <div class = "readyUpContainer">
+            <input type="text" placeholder="ROOM ID" onchange="changeLink()" id="linkText">
+            <a href = "/room/" id="joinButton">
+                <button id = "joinRaceBtn">join race</button>
+            </a>
+        </div>
+
+            <script>
+              let slideIndex = 1;
+              showSlides(slideIndex);
+
+              // Next/previous controls
+              function plusSlides(n) {
+                     showSlides(slideIndex += n);
+              }
+
+              // Thumbnail image controls
+              function currentSlide(n) {
+                     showSlides(slideIndex = n);
+              }
+
+              function showSlides(n) {
+                     let i;
+                     let slides = document.getElementsByClassName("mySlides");
+                     let dots = document.getElementsByClassName("dot");
+                     if (n > slides.length) {slideIndex = 1}
+                     if (n < 1) {slideIndex = slides.length}
+                     for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                     }
+                     for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                     }
+                     slides[slideIndex-1].style.display = "flex";
+                     dots[slideIndex-1].className += " active";
+              }
+
+                async function changeName() {
+                    const name = document.getElementById("nameInput").value;
+                    await fetch("/changeName", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            name: name
+                        })
+                    });
+                }
+                function changeLink() {
+                    document.getElementById('joinButton').href = 'room/' + document.getElementById('linkText').value;
+                }
+
+                async function changeBird(bird) {
+                    console.log("asdfk")
+                    if (bird === "flam") {
+                        bird += ".gif"
+                    }
+                    else {
+                        bird += ".png"
+                    }
+
+                    await fetch("/changeBird", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            bird: bird
+                        })
+                    })
+                }
+            </script>
+
+
+    </body>
+</html>

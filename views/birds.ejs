@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <link rel="stylesheet" href= "style.css">
+       <link rel="stylesheet" href= "carousel.css">
+       <title>goose chase</title>
+    </head>
+    <body>
+        <a href = "/">
+            <button id = "joinRaceBtn">home</button>
+        </a>
+        <!-- <label for="character">Choose Character:</label>
+        <input type="image" src="/src/duoOwl.png" />
+        <input type="image" src="/src/parrot.png" /> -->
+
+        <!-- Slideshow container -->
+        <div class="slideshow-container" style="width:50%">
+            <h1>Bird Gallery!</h1>
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/duoOwl.png" style="width:50%" id="duo" onlick="changeBird(this.id)"></button>
+                <!--
+                <div class="numbertext">1 / 3</div>
+                -->
+                 <div class="text">Duo the Dynamic Owl</div>
+                 <br>
+                    <div class = "text-description"> Duo is an owl. As a local Pittsburgher and native Tartan, he is a language wiz from Dietrich College with a double major in Computational Linguistics! Duo is sad because he can't login to his SIO Student Info System without using Duopush. Push Duo his way through CMU's webpages!</div>
+                </br>
+
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/parrot.png" style="width:50%" id="parrot" onlick="changeBird(this.id)"></button>
+                 <div class="text">Polly the Pissed Parrot</div>
+                 <br>
+                    <div class = "text-description"> Polly is a Polymorphic Parrot. She is a 15150 TA, and she can take you to any page because she is polymorchic like that! However, Polly is agitated because because she can only repeat what her students ask her (she is a parrot, after all) instead of answering them . She always gets lost in recursion. Aid her in flying to help her students on CMU's OH queues!  </div>
+                </br>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/flamglam.png" style="width:50%" id="flam" onlick="changeBird(this.id)"></button>
+                 <div class="text">Flam the Flamin Flamingo</div>
+                 <br>
+                    <div class = "text-description"> Flam is a glam flamingo. He is a Design + Fashion student in CFA. His biggest birdsonality trait is being sassy and over the top when it comes to dressing up. Since he can't fly, he chooses to strut in style and treats every outing as a catwalk. Help him sass his way through CMU's chic-ly styled CSS pages!   </div>
+                </br>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/ostrich.png" style="width:50%" id="flam" onlick="changeBird(this.id)"></button>
+                 <div class="text">Ollie the Owkward Ostrich</div>
+                 <br>
+                    <div class = "text-description"> Ollie is an ostrich. He is a CS major who is also on the track team(he can sprint over 43 mph!) Although he can't fly and is a little shy, I guarantee you he won't stick his head into the sand if you choose him! In fact, he will take you to your webpage destination in a blink of an eye.   </div>
+                </br>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/penguin.png" style="width:50%" id="flam" onlick="changeBird(this.id)"></button>
+                 <div class="text">Pennie the Poppin Penguin</div>
+                 <br>
+                    <div class = "text-description"> Pennie is a party penguin. She is an AI major but loves to dance! Join her and her happy feet on your journey across the web page treck. </div>
+                </br>
+            </div>
+
+            <div class="mySlides fade">
+                <button id = "birdButton"><img src="/src/honk.png" style="width:50%" id="flam" onlick="changeBird(this.id)"></button>
+                  <div class="text">Honkie the Chonky Goose</div>
+                  <br>
+                    <div class = "text-description"> Honkie is a goose. He is a Culinary Studies major skilled at playing Duck Duck Goose. He wins everytime because he already got rid of the ducks to make his Duck Confit for his French Cuisine Class. If you choose him, he'll not only guide you to
+                         your seeked website but also give you a bonus rundown of the Pittsburgh food scene (and food places to avoid on CMU's campus)</div>
+                  </br>
+
+            </div>
+
+            <!-- Next and previous buttons -->
+            <div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            <!-- The dots/circles -->
+            <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+            <span class="dot" onclick="currentSlide(7)"></span>
+            </div>
+        </div>
+
+
+            <script>
+              let slideIndex = 1;
+              showSlides(slideIndex);
+
+              // Next/previous controls
+              function plusSlides(n) {
+                     showSlides(slideIndex += n);
+              }
+
+              // Thumbnail image controls
+              function currentSlide(n) {
+                     showSlides(slideIndex = n);
+              }
+
+              function showSlides(n) {
+                     let i;
+                     let slides = document.getElementsByClassName("mySlides");
+                     let dots = document.getElementsByClassName("dot");
+                     if (n > slides.length) {slideIndex = 1}
+                     if (n < 1) {slideIndex = slides.length}
+                     for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                     }
+                     for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                     }
+                     slides[slideIndex-1].style.display = "flex";
+                     dots[slideIndex-1].className += " active";
+              }
+
+                async function changeName() {
+                    const name = document.getElementById("nameInput").value;
+                    await fetch("/changeName", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            name: name
+                        })
+                    });
+                }
+
+                async function changeBird(bird) {
+                    if (bird === "flam") {
+                        bird += ".gif"
+                    }
+                    else {
+                        bird += ".png"
+                    }
+
+                    await fetch("/changeBird", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            bird: bird
+                        })
+                    })
+                }
+            </script>
+
+
+    </body>
+</html>
